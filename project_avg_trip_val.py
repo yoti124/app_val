@@ -52,9 +52,9 @@ def main():
     file1 = st.file_uploader("Choose a file csv for val data",type=['csv'])
     file2 = st.file_uploader("Choose a file excel for luz data",type=['xlsx'])
     
-    if file1.type == "csv":
+    if file1 and file2:
+    
         df = pd.read_csv(file1,sep=';', error_bad_lines=True,engine='python', index_col=False, encoding="UTF-8-SIG")
-    else:
         luz = pd.read_excel(file2)
     with st.spinner('Reading data csv File and read luz excel file...'):
         st.success('Done!')
