@@ -66,27 +66,20 @@ def main():
         luz = pd.read_excel(file2)
         with st.spinner('Reading data zip and csv File and read luz excel file...'):
             st.success('Done!')
-        # st.write(df.head())
-        # st.write(luz.head())
 
 
 
-        # cols = df.columns.tolist()
 
-        # st.subheader("Choose Address Columns from the Sidebar")
+
         st.info("Example correct data structe: TransactionDate:2022-02-22	 ,TransactionTime:18:50	 ,CardIDbi:18518533 ,RouteId:14139 ,RouteShortName:139 ,Direction:1 ,StopCode:681 ,StopName:מחלף גבעת שמואל	")
     
     if st.checkbox("data Formatted correctly (Example Above)"):
-        merge_process(luz,df)
-        # st.write(df_address)
 
         with st.spinner('prcoess Hold tight...'):
             time.sleep(5)
             st.success('Done!')
-            # st.write(df_address)
             st.markdown(download_csv(luz=luz,df=df), unsafe_allow_html=True)
-            # st.markdown(display_map(df_address), unsafe_allow_html=True)
-            # st.plotly_chart(display_map(df_address))
+       
         
             
 
