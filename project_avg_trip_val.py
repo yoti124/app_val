@@ -1,7 +1,6 @@
 import base64
 import streamlit as st
 import pandas as pd
-import numpy as np
 import time
 
 
@@ -25,10 +24,7 @@ def process_data(df):
 def process_luz(luz,df):
     df_after = process_data(df)
     luz = luz.rename(columns={"מקט":"Line_code","כיוון":"Direction","שעת יציאה":"Hour","יום":"Day"})
-    try:
-        luz["day_of_week"]= np.where(luz['Day']==6,"Friday",np.where(luz['Day']==7,"Saturday","regular_day"))
-    except:
-        pass
+ 
 
     luz=luz.loc[luz.Line_code.isin(df_after.RouteId.unique())]
     luz = luz.rename(columns={"Line_code":"RouteId"}).rename(columns={"קו":"RouteShortName"})
