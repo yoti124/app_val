@@ -40,8 +40,8 @@ def merge_process(luz,df):
     answer_new['Mean_in_trip_nov']=answer_new.nov_mean/answer_new.Luz_kaitz
     return answer_new
 
-def download_csv(luz,df):
-    answer_new=merge_process(luz,df)
+def download_csv(df):
+    answer_new=df
     csv = answer_new.to_csv(index=False)
     b64 = base64.b64encode(csv.encode('utf-8')).decode()
     href = f'<a href="data:file/csv;base64,{b64}">Download csv File</a> (right-click and save as &lt;some_name&gt;.csv)'
@@ -55,7 +55,8 @@ def main():
     if file1 and file2:
         df = pd.read_csv(file1,sep=';')
         luz = pd.read_excel(file2)
-    with st.spinner('Reading data csv File and read luz excel file...'):
+    with st.spinner('Reading Files...'):
+        time.sleep(5)
         st.success('Done!')
 
 
@@ -65,11 +66,12 @@ def main():
         # st.info("Example correct data structe: TransactionDate:2022-02-22	 ,TransactionTime:18:50	 ,CardIDbi:18518533 ,RouteId:14139 ,RouteShortName:139 ,Direction:1 ,StopCode:681 ,StopName:מחלף גבעת שמאל	")
     
     if st.checkbox("data Formatted correctly (Example Above)"):
+        df_result = merge_process(luz=luz,df=df)
 
         with st.spinner('prcoess Hold tight...'):
             time.sleep(5)
             st.success('Done!')
-            st.markdown(download_csv(luz=luz,df=df), unsafe_allow_html=True)
+            st.markdown(download_csv(df_result), unsafe_allow_html=True)
        
         
             
