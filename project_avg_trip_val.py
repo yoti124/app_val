@@ -22,26 +22,26 @@ def process_data(df):
     return df_after
 
 def process_luz(luz,df):
-    df_after = process_data(df)
+
     luz = luz.rename(columns={"מקט":"Line_code","כיוון":"Direction","שעת יציאה":"Hour","יום":"Day"})
  
 
-    luz=luz.loc[luz.Line_code.isin(df_after.RouteId.unique())]
+    luz=luz.loc[luz.Line_code.isin(df.RouteId.unique())]
     luz = luz.rename(columns={"Line_code":"RouteId"}).rename(columns={"קו":"RouteShortName"})
     luz.Hour=luz.Hour.str[:2].astype(int)
     t_luz = luz.groupby(['RouteId',"RouteShortName", 'Direction', 'Day', 'Hour']).size().to_frame('cnt').groupby(['RouteId',"RouteShortName", 'Direction','Hour'])['cnt'].mean().to_frame('Luz_kaitz').reset_index()
     return t_luz
 
-def merge_process(luz,df):
-    t_luz = process_luz(luz,df)
-    df_after=process_data(df)
+def merge_process(t_luz,df_after):
     answer=pd.merge(df_after, t_luz, on=['RouteId',"RouteShortName",'Hour',"Direction"], how='outer')
     answer_new= answer.copy()
     answer_new['Mean_in_trip_nov']=answer_new.nov_mean/answer_new.Luz_kaitz
     return answer_new
 
-def download_csv(df):
-    answer_new=df
+def download_csv(luz,df):
+    df_after = process_data(df)
+    t_luz = process_luz(luz,df_after)
+    answer_new=merge_process(t_luz,df_after)
     csv = answer_new.to_csv(index=False)
     b64 = base64.b64encode(csv.encode('utf-8')).decode()
     href = f'<a href="data:file/csv;base64,{b64}">Download csv File</a> (right-click and save as &lt;some_name&gt;.csv)'
@@ -49,29 +49,26 @@ def download_csv(df):
 
 
 def main():
-    file1 = st.file_uploader("Choose a file csv for val data",type=['csv'])
-    file2 = st.file_uploader("Choose a file excel for luz data",type=['xlsx'])
+    file1 = st.file_uploader("Choose a file csv for val data",type=['xlsx','csv'])
+    file2 = st.file_uploader("Choose a file excel for luz data",type=['xlsx','csv'])
     
     if file1 and file2:
-        df = pd.read_csv(file1,sep=';')
-        luz = pd.read_excel(file2)
+        if file1.type == "csv":
+            df = pd.read_csv(file1,sep=';')
+        else:
+            luz = pd.read_excel(file2)
     with st.spinner('Reading Files...'):
         time.sleep(5)
         st.success('Done!')
 
 
-
-
-        # st.subheader("Choose Address Columns from the Sidebar")
-        # st.info("Example correct data structe: TransactionDate:2022-02-22	 ,TransactionTime:18:50	 ,CardIDbi:18518533 ,RouteId:14139 ,RouteShortName:139 ,Direction:1 ,StopCode:681 ,StopName:מחלף גבעת שמאל	")
+    st.info("Example correct data structe: TransactionDate:2022-02-22	 ,TransactionTime:18:50	 ,CardIDbi:18518533 ,RouteId:14139 ,RouteShortName:139 ,Direction:1 ,StopCode:681 ,StopName:מחלף גבעת שמאל	")
     
-    if st.checkbox("data Formatted correctly (Example Above)"):
-        df_result = merge_process(luz=luz,df=df)
 
+    if st.checkbox("prcoess Hold tight... (Example Above)"):
         with st.spinner('prcoess Hold tight...'):
-            time.sleep(5)
             st.success('Done!')
-            st.markdown(download_csv(df_result), unsafe_allow_html=True)
+            st.markdown(download_csv(luz,df), unsafe_allow_html=True)
        
         
             
