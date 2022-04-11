@@ -65,10 +65,10 @@ def main():
     st.info("Example correct data structe: TransactionDate:2022-02-22	 ,TransactionTime:18:50	 ,CardIDbi:18518533 ,RouteId:14139 ,RouteShortName:139 ,Direction:1 ,StopCode:681 ,StopName:מחלף גבעת שמאל	")
     
 
-    if st.checkbox("prcoess Hold tight... (Example Above)"):
-        with st.spinner('prcoess Hold tight...'):
-            st.success('Done!')
-            st.markdown(download_csv(luz,df), unsafe_allow_html=True)
+    
+    with st.spinner('prcoess Hold tight...'):
+        st.success('Done!')
+        st.markdown(download_csv(luz,df), unsafe_allow_html=True)
        
         
             
