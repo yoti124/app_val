@@ -8,6 +8,7 @@ import time
 st.title("atuomated file process val avg")
 st.markdown("Uppload a zip File with the following fileds:   TransactionDate ,TransactionTime ,CardIDbi ,RouteId ,RouteShortName ,Direction ,StopCode ,StopName ")
 
+@st.cache
 def process_data(df):
     try:   
          df= df.rename(columns={"ClusterId":"Cluster_code2"})
@@ -22,6 +23,7 @@ def process_data(df):
     df_after=df.groupby(['RouteId',"RouteShortName",'Direction','Day',"StopCode","StopName",'Hour']).size().groupby(['RouteId',"RouteShortName",'Direction',"StopCode","StopName",'Hour']).mean().to_frame("nov_mean").reset_index()  
     return df_after
 
+@st.cache
 def process_luz(luz,df):
     df_after = process_data(df)
     luz = luz.rename(columns={"מקט":"Line_code","כיוון":"Direction","שעת יציאה":"Hour","יום":"Day"})
@@ -36,6 +38,7 @@ def process_luz(luz,df):
     t_luz = luz.groupby(['RouteId',"RouteShortName", 'Direction', 'Day', 'Hour']).size().to_frame('cnt').groupby(['RouteId',"RouteShortName", 'Direction','Hour'])['cnt'].mean().to_frame('Luz_kaitz').reset_index()
     return t_luz
 
+@st.cache
 def merge_process(luz,df):
     t_luz = process_luz(luz,df)
     df_after=process_data(df)
@@ -46,7 +49,7 @@ def merge_process(luz,df):
     answer_new['Mean_in_trip_nov']=answer_new.nov_mean/answer_new.Luz_kaitz
     return answer_new
 
-
+@st.cache
 def download_csv(luz,df):
     answer_new=merge_process(luz,df)
     csv = answer_new.to_csv(index=False)
@@ -60,8 +63,6 @@ def main():
     file2 = st.file_uploader("Choose a file excel for luz data")
     
     if file1 is not None or file2 is not None:
-        file1.seek(0)
-        file2.seek(0)
         df = pd.read_csv(file1,sep=';', error_bad_lines=True,engine='python', index_col=False, encoding="UTF-8-SIG")
         luz = pd.read_excel(file2)
         with st.spinner('Reading data zip and csv File and read luz excel file...'):
