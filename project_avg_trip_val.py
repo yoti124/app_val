@@ -55,7 +55,7 @@ def main():
     
     if file1 is not None and file2 is not None:
         df = pd.read_csv(file1,sep=';', error_bad_lines=True,engine='python', index_col=False, encoding="UTF-8-SIG")
-        luz = pd.read_excel(file2)
+#         luz = pd.read_excel(file2)
         with st.spinner('Reading data zip and csv File and read luz excel file...'):
             st.success('Done!')
 
