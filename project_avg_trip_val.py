@@ -1,7 +1,6 @@
 import base64
 import streamlit as st
 import pandas as pd
-import datetime as dt
 import numpy as np
 from streamlit.cli import main
 from streamlit.delta_generator import DeltaGenerator as _DeltaGenerator
