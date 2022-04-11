@@ -1,4 +1,3 @@
- 
 import base64
 import streamlit as st
 import pandas as pd
@@ -50,8 +49,8 @@ def download_csv(luz,df):
 
 
 def main():
-    file1 = st.file_uploader("Choose a file csv for val data")
-    file2 = st.file_uploader("Choose a file excel for luz data")
+    file1 = st.file_uploader("Choose a file csv for val data",type=['csv'])
+    file2 = st.file_uploader("Choose a file excel for luz data",type=['xlsx'])
     
     if file1 is not None and file2 is not None:
         df = pd.read_csv(file1,sep=';', error_bad_lines=True,engine='python', index_col=False, encoding="UTF-8-SIG")
@@ -78,5 +77,3 @@ def main():
 
 if __name__ == "__main__":
      main()
-
-
