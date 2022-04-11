@@ -78,7 +78,7 @@ def main():
         with st.spinner('prcoess Hold tight...'):
             time.sleep(5)
             st.success('Done!')
-            st.markdown(download_csv(luz=luz,df=df), unsafe_allow_html=True)
+            st.markdown(download_csv(luz=luz,df=df))
        
         
             
