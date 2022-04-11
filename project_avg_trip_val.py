@@ -1,3 +1,4 @@
+ 
 import base64
 import streamlit as st
 import pandas as pd
@@ -35,10 +36,8 @@ def process_luz(luz,df):
 def merge_process(luz,df):
     t_luz = process_luz(luz,df)
     df_after=process_data(df)
-    df_after["test_index"] = np.arange(1,len(df_after.index)+1)
     answer=pd.merge(df_after, t_luz, on=['RouteId',"RouteShortName",'Hour',"Direction"], how='outer')
-    answer_new= answer.drop_duplicates(subset=["test_index"]).copy()
-    answer_new.drop(columns="test_index",inplace=True)
+    answer_new= answer.copy()
     answer_new['Mean_in_trip_nov']=answer_new.nov_mean/answer_new.Luz_kaitz
     return answer_new
 
@@ -51,7 +50,7 @@ def download_csv(luz,df):
 
 
 def main():
-    file1 = st.file_uploader("Choose a file zip for val data")
+    file1 = st.file_uploader("Choose a file csv for val data")
     file2 = st.file_uploader("Choose a file excel for luz data")
     
     if file1 is not None and file2 is not None:
@@ -63,8 +62,8 @@ def main():
 
 
 
-
-        st.info("Example correct data structe: TransactionDate:2022-02-22	 ,TransactionTime:18:50	 ,CardIDbi:18518533 ,RouteId:14139 ,RouteShortName:139 ,Direction:1 ,StopCode:681 ,StopName:מחלף גבעת שמואל	")
+        st.subheader("Choose Address Columns from the Sidebar")
+        st.info("Example correct data structe: TransactionDate:2022-02-22	 ,TransactionTime:18:50	 ,CardIDbi:18518533 ,RouteId:14139 ,RouteShortName:139 ,Direction:1 ,StopCode:681 ,StopName:מחלף גבעת שמאל	")
     
     if st.checkbox("data Formatted correctly (Example Above)"):
 
@@ -78,6 +77,6 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+     main()
 
 
