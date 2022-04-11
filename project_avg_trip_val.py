@@ -48,8 +48,8 @@ def merge_process(luz,df):
 
 
 def download_csv(luz,df):
-    df_result=merge_process(luz,df)
-    csv = df_result.to_csv(index=False)
+    answer_new=merge_process(luz,df)
+    csv = answer_new.to_csv(index=False)
     b64 = base64.b64encode(csv.encode('utf-8')).decode()
     href = f'<a href="data:file/csv;base64,{b64}">Download csv File</a> (right-click and save as &lt;some_name&gt;.csv)'
     return href
@@ -59,7 +59,7 @@ def main():
     file1 = st.file_uploader("Choose a file zip for val data")
     file2 = st.file_uploader("Choose a file excel for luz data")
     
-    if file1 is not None and file2 is not None:
+    if file1 is not None or file2 is not None:
         file1.seek(0)
         file2.seek(0)
         df = pd.read_csv(file1,sep=';', error_bad_lines=True,engine='python', index_col=False, encoding="UTF-8-SIG")
@@ -78,7 +78,7 @@ def main():
         with st.spinner('prcoess Hold tight...'):
             time.sleep(5)
             st.success('Done!')
-            st.markdown(download_csv(luz=luz,df=df))
+            st.markdown(download_csv(luz=luz,df=df), unsafe_allow_html=True)
        
         
             
