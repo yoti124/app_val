@@ -52,17 +52,18 @@ def main():
     file1 = st.file_uploader("Choose a file csv for val data",type=['csv'])
     file2 = st.file_uploader("Choose a file excel for luz data",type=['xlsx'])
     
-    if file1 is not None and file2 is not None:
+    if file1.type == "csv":
         df = pd.read_csv(file1,sep=';', error_bad_lines=True,engine='python', index_col=False, encoding="UTF-8-SIG")
+    else:
         luz = pd.read_excel(file2)
-        with st.spinner('Reading data zip and csv File and read luz excel file...'):
-            st.success('Done!')
+    with st.spinner('Reading data csv File and read luz excel file...'):
+        st.success('Done!')
 
 
 
 
-        st.subheader("Choose Address Columns from the Sidebar")
-        st.info("Example correct data structe: TransactionDate:2022-02-22	 ,TransactionTime:18:50	 ,CardIDbi:18518533 ,RouteId:14139 ,RouteShortName:139 ,Direction:1 ,StopCode:681 ,StopName:מחלף גבעת שמאל	")
+        # st.subheader("Choose Address Columns from the Sidebar")
+        # st.info("Example correct data structe: TransactionDate:2022-02-22	 ,TransactionTime:18:50	 ,CardIDbi:18518533 ,RouteId:14139 ,RouteShortName:139 ,Direction:1 ,StopCode:681 ,StopName:מחלף גבעת שמאל	")
     
     if st.checkbox("data Formatted correctly (Example Above)"):
 
