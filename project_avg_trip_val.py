@@ -2,10 +2,7 @@ import base64
 import streamlit as st
 import pandas as pd
 import numpy as np
-from streamlit.cli import main
-from streamlit.delta_generator import DeltaGenerator as _DeltaGenerator
-from streamlit import cursor, caching
-
+import time
 
 
 st.title("atuomated file process val avg")
@@ -60,19 +57,17 @@ def download_csv(luz,df):
 
 def main():
     file1 = st.file_uploader("Choose a file zip for val data")
-    file2 = st.file_uploader("Choose a file zip for luz data")
+    file2 = st.file_uploader("Choose a file excel for luz data")
     
     if file1 is not None and file2 is not None:
         file1.seek(0)
         file2.seek(0)
-        df = pd.read_csv(file1,sep=';',compression="zip",  error_bad_lines=True,engine='python', index_col=False, encoding="UTF-8-SIG")
+        df = pd.read_csv(file1,sep=';', error_bad_lines=True,engine='python', index_col=False, encoding="UTF-8-SIG")
         luz = pd.read_excel(file2)
         with st.spinner('Reading data zip and csv File and read luz excel file...'):
             st.success('Done!')
-        st.write(df.head())
-        st.write(luz.head())
-        st.write(df.shape)
-        st.write(luz.shape)
+        # st.write(df.head())
+        # st.write(luz.head())
 
 
 
@@ -86,9 +81,10 @@ def main():
         # st.write(df_address)
 
         with st.spinner('prcoess Hold tight...'):
+            time.sleep(5)
             st.success('Done!')
             # st.write(df_address)
-            st.markdown(download_csv(luz,df), unsafe_allow_html=True)
+            st.markdown(download_csv(luz=luz,df=df), unsafe_allow_html=True)
             # st.markdown(display_map(df_address), unsafe_allow_html=True)
             # st.plotly_chart(display_map(df_address))
         
