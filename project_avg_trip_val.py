@@ -6,7 +6,7 @@ import time
 
 st.title("atuomated file process val avg")
 st.markdown("Uppload a zip File with the following fileds:   TransactionDate ,TransactionTime ,CardIDbi ,RouteId ,RouteShortName ,Direction ,StopCode ,StopName ")
-
+global luz, df
 def process_data(df):
     try:   
          df= df.rename(columns={"ClusterId":"Cluster_code2"})
